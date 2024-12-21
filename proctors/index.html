@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькуляторы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        section {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 600px;
+            padding: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: block;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background: #f4f4f4;
+            border-left: 4px solid #4CAF50;
+            padding: 10px 15px;
+            overflow-x: auto;
+            border-radius: 5px;
+            max-width: 100%;
+            font-size: 14px;
+        }
+        hr {
+            border: 0;
+            height: 2px;
+            background: #ddd;
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 12px;
+        }
+    </style>
+    <script>
+        function calculateProctors() {
+            const monthlySessions = parseFloat(document.getElementById("monthly_sessions").value);
+            const workingDays = parseFloat(document.getElementById("working_days_in_month").value);
+            const videoLength = parseFloat(document.getElementById("avg_video_length").value);
+            const reviewTimePerVideo = parseFloat(document.getElementById("review_time_per_video").value);
+            const proctorWorkHours = parseFloat(document.getElementById("proctor_work_hours").value);
+
+            const dailySessions = monthlySessions / workingDays;
+            const totalReviewTimeDaily = (dailySessions * reviewTimePerVideo);
+            const reviewTimeInHoursDaily = totalReviewTimeDaily / 60;
+            const proctorsRequired = reviewTimeInHoursDaily / proctorWorkHours;
+
+            document.getElementById("proctor_output").innerText = `
+Количество сессий в день (из расчёта ${workingDays} рабочих дней): ${dailySessions.toFixed(2)}
+Общее время на проверку в день: ${totalReviewTimeDaily.toFixed(2)} минут (${reviewTimeInHoursDaily.toFixed(2)} часов)
+Необходимое количество прокторов: ${Math.ceil(proctorsRequired)} (округлено в большую сторону)
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>Калькулятор прокторов</h1>
+    <section>
+        <label>Количество сессий в месяц: 
+            <input type="number" id="monthly_sessions" value="10000">
+        </label>
+        <label>Среднее количество рабочих дней в месяце: 
+            <input type="number" id="working_days_in_month" value="22">
+        </label>
+        <label>Средняя продолжительность видео (минуты): 
+            <input type="number" id="avg_video_length" value="60">
+        </label>
+        <label>Время на проверку одного видео (минуты): 
+            <input type="number" id="review_time_per_video" value="10">
+        </label>
+        <label>Часы работы одного проктора в день: 
+            <input type="number" id="proctor_work_hours" value="8">
+        </label>
+        <button onclick="calculateProctors()">Рассчитать прокторов</button>
+        <pre id="proctor_output"></pre>
+    </section>
+</body>
+</html>
